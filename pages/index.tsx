@@ -2,11 +2,24 @@ import TextField from '../components/TextField'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
+import { ChangeEvent, useState } from 'react'
 // import { Search, SearchIconWrapper, StyledInputBase } from '../components/SearchInput'
 import SearchIcon from '@mui/icons-material/Search'
 import styles from '../styles/Home.module.css'
+import NFTCardList from '../components/NFTCardList'
 
 const Home: NextPage = () => {
+  const [search, setSearch] = useState('')
+  const [fetchResult, setFetchResult] = useState(false)
+
+  const onSearchChange = (ev: ChangeEvent<HTMLInputElement>) => {
+    setSearch(ev.target.value)
+  }
+
+  const onSearch = () => {
+    setFetchResult(true)
+  }
+
   return (
     <div className={styles.container}>
       <Head>
@@ -23,13 +36,30 @@ const Home: NextPage = () => {
 
           <div className={styles.description}>
             <span className={styles.searchContainer}>
-              <TextField placeholder='Search Collection, name...' />
-              <span className={styles.searchIconContainer}><SearchIcon/></span>
+              <TextField
+                placeholder='Search Collection, name...'
+                value={search}
+                onChange={onSearchChange}
+              />
+              <span
+                className={styles.searchIconContainer}
+                onClick={onSearch}
+              >
+                <SearchIcon/>
+              </span>
             </span>
           </div>
         </div>
 
-        <div className={styles.grid}>
+        <div className={styles.searchResultContainer}>
+          <NFTCardList
+            search={search}
+            fetchResult={fetchResult}
+            setFetchResult={setFetchResult}
+          />
+        </div>
+
+        {/* <div className={styles.grid}>
           <a href="https://nextjs.org/docs" className={styles.card}>
             <h2>Documentation &rarr;</h2>
             <p>Find in-depth information about Next.js features and API.</p>
@@ -57,7 +87,7 @@ const Home: NextPage = () => {
               Instantly deploy your Next.js site to a public URL with Vercel.
             </p>
           </a>
-        </div>
+        </div> */}
       </main>
 
       <footer className={styles.footer}>

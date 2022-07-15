@@ -36,6 +36,10 @@
   cursor: pointer;
 }
 
+.searchResultContainer {
+  padding: 1.5rem;
+}
+
 .footer {
   display: flex;
   flex: 1;
