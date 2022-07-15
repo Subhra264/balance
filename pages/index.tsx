@@ -21,9 +21,12 @@ const Home: NextPage = () => {
             Welcome to NFT Explorer
           </h1>
 
-          <p className={styles.description}>
-            <TextField placeholder='Search Collection, name...' />
-          </p>
+          <div className={styles.description}>
+            <span className={styles.searchContainer}>
+              <TextField placeholder='Search Collection, name...' />
+              <span className={styles.searchIconContainer}><SearchIcon/></span>
+            </span>
+          </div>
         </div>
 
         <div className={styles.grid}>
