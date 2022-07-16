@@ -1,0 +1,185 @@
+type Query {
+  """
+  Get Event Logs within a group of blocks
+
+  Equivalent to GET https://api-ropsten.etherscan.io/api?module=$module;&action=$action;&fromBlock=$fromBlock;&toBlock=latest&address=$address;&topic0=$topic;&apikey=$etherscan_apikey
+  """
+  ropsten_etherscan_logs(
+    """
+    The api key
+    """
+    etherscan_apikey: Secret!
+
+    """
+    The block to get the logs from
+    """
+    fromBlock: String!
+
+    """
+    The address
+    """
+    address: String!
+
+    """
+    The topic
+    """
+    topic: String!
+
+    """
+    The module
+    """
+    module: String = "logs"
+
+    """
+    The action
+    """
+    action: String = "getLogs"
+  ): Ropsten_Etherscan_Etherscan
+    @rest(
+      endpoint: "https://api-ropsten.etherscan.io/api"
+      arguments: [{ name: "apikey", argument: "etherscan_apikey" }]
+    )
+  """
+  Get Transactions By Hash
+
+  Equivalent to GET https://api-ropsten.etherscan.io/api/api?module=$module;&action=$action;&txhash=$transaction_hash;&apikey=$etherscan_apikey
+  """
+  ropsten_etherscan_transaction(
+    """
+    The api key
+    """
+    etherscan_apikey: Secret!
+    """
+    The transaction hash
+    """
+    transaction_hash: String!
+
+    """
+    The module
+    """
+    module: String!
+
+    """
+    The action
+    """
+    action: String!
+  ): Ropsten_Etherscan_Transaction
+    @rest(
+      resultroot: "result"
+      endpoint: "https://api-ropsten.etherscan.io/api?module=$module;&action=$action;&txhash=$transaction_hash;&apikey=$etherscan_apikey"
+    )
+  """
+  Get Normal Transactions performed by an address
+
+  Equivalent to --- GET https://api-ropsten.etherscan.io/api?module=account
+   &action=txlist
+   &address=0x1671363cdf39196333f56818963f108066f776f9
+   &startblock=0
+   &endblock=99999999
+   &page=1
+   &offset=10
+   &sort=asc
+   &apikey=YourApiKeyToken
+  """
+  ropsten_etherscan_transactions(
+    """
+    The api key
+    """
+    etherscan_apikey: Secret!
+    """
+    The address
+    """
+    address: String!
+
+    """
+    The module
+    """
+    module: String!
+
+    """
+    The action
+    """
+    action: String!
+  ): Ropsten_Etherscan_Normal_Transaction
+    @rest(
+      resultroot: "result"
+      endpoint: "https://api-ropsten.etherscan.io/api?module=$module;&action=$action;&address=$address;&apikey=$etherscan_apikey"
+    )
+}
+
+type Ropsten_Etherscan_Logs {
+  address: String
+  blockNumber: String
+  data: String
+  gasPrice: String
+  gasUsed: String
+  logIndex: String
+  timeStamp: String
+  topics: [String]
+  transactionHash: String
+  transactionIndex: String
+  transaction(
+    etherscan_apikey: Secret!
+    action: String!
+    module: String!
+  ): Ropsten_Etherscan_Transaction
+    @materializer(
+      query: "ropsten_etherscan_transaction"
+      arguments: [
+        { name: "etherscan_apikey", argument: "etherscan_apikey" }
+        { name: "action", argument: "action" }
+        { name: "module", argument: "module" }
+        { name: "transaction_hash", field: "transactionHash" }
+      ]
+    )
+
+}
+
+type Ropsten_Etherscan_Normal_Transaction {
+  blockNumber: String,
+  timeStamp: String
+  hash: String
+  nonce: String
+  blockHash: String
+  transactionIndex: String
+  from: String
+  to: String
+  value: String
+  gas: String
+  gasPrice: String
+  isError: String
+  txreceipt_status: String
+  input: String
+  contractAddress: String
+  cumulativeGasUsed: String
+  gasUsed: String
+  confirmations: String
+}
+
+type Ropsten_Etherscan_Transaction {
+  accessList: JSON
+  blockHash: String
+  blockNumber: String
+  chainId: String
+  from: String
+  gas: String
+  gasPrice: String
+  hash: String
+  input: String
+  maxFeePerGas: String
+  maxPriorityFeePerGas: String
+  nonce: String
+  r: String
+  s: String
+  to: String
+  transactionIndex: String
+  type: String
+  v: String
+  value: String
+}
+
+type Ropsten_Etherscan_Etherscan {
+  message: String
+  result: [Ropsten_Etherscan_Logs]
+  status: String
+}

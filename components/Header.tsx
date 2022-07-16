@@ -15,6 +15,8 @@ import AccountCircle from '@mui/icons-material/AccountCircle'
 import MailIcon from '@mui/icons-material/Mail'
 import NotificationsIcon from '@mui/icons-material/Notifications'
 import MoreIcon from '@mui/icons-material/MoreVert'
+import { LayoutContext } from '../utils/contexts'
+import Link from 'next/link'
 
 interface HeaderProps {
   setSearch: React.Dispatch<React.SetStateAction<string>>
@@ -64,6 +66,7 @@ export default function Header(props: HeaderProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null)
+  const { currentAccount, connectWallet } = React.useContext(LayoutContext)
 
   const isMenuOpen = Boolean(anchorEl)
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
@@ -102,8 +105,18 @@ export default function Header(props: HeaderProps) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      {
+        !currentAccount && connectWallet && (
+          <MenuItem onClick={connectWallet}>Connect Wallet</MenuItem>
+        )
+      }
+      {
+        currentAccount && (
+          <MenuItem onClick={handleMenuClose}>
+            <Link href='/me'>My account</Link>
+          </MenuItem>
+        )
+      }
     </Menu>
   )
 
