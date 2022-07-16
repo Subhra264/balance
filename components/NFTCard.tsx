@@ -3,8 +3,11 @@ import Image from 'next/image'
 import React from 'react'
 import { SECONDARY_DARK, TERTIARY_COLOR } from '../utils/colors'
 
-interface NFTCardProps {
-
+export interface NFTCardProps {
+  tokenId: string
+	tokenAddress: string
+	metadata: any
+	contractType: string
 }
 
 const NFTCardContainer = styled('div')(({theme}) => ({
@@ -27,18 +30,23 @@ const NFTCardDescContainer = styled('div')(({theme}) => ({
 }))
 
 const NFTCard: React.FC<NFTCardProps> = (props) => {
+  const metadata = JSON.parse(props.metadata)
+
+  let image = (metadata.image || metadata.image_url) as string || ''
+  if (image.startsWith('ipfs://')) image = `https://ipfs.io/${metadata?.image.slice(7)}`
+
 	return (
 		<NFTCardContainer>
 			<NFTImageContainer>
 				<img
-					src={'https://bapesclan.mypinata.cloud/ipfs/QmXrxPHX9porchZaYUKjL13nPJbCUSPSvbsk2XPxXqxdSC/1961.jpg'}
+					src={image}
 					width='100%'
 					height='100%'
 				/>
 			</NFTImageContainer>
 			<NFTCardDescContainer>
-				<div>Name</div>
-				<div>Address</div>
+				<div>{metadata.name}</div>
+				<div>{props.tokenAddress.slice(0, 8)}...</div>
 			</NFTCardDescContainer>
 		</NFTCardContainer>
 	)
