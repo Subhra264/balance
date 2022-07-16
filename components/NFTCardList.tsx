@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { styled } from '@mui/material/styles'
 import NFTCard, { NFTCardProps } from './NFTCard'
 import { querySearchNFTs } from '../libs/graphQLQuery'
+import NFTModal from './NFTModal'
 
 interface NFTCardListProps {
 	search: string
@@ -17,6 +18,8 @@ const NFTCardListContainer = styled('div')(({theme}) => ({
 const NFTCardList: React.FC<NFTCardListProps> = (props) => {
 
   const [result, setResult] = useState<Array<NFTCardProps>>([])
+  const [modalProps, setModalProps] = useState<NFTCardProps>()
+  const [openModal, setOpenModal] = useState(false)
 
 	useEffect(() => {
 		if (props.search && props.fetchResult) {
@@ -51,9 +54,19 @@ const NFTCardList: React.FC<NFTCardListProps> = (props) => {
         result.length?
           (
             <NFTCardListContainer>
+              <NFTModal
+                modalProps={modalProps}
+                open={openModal}
+                setOpen={setOpenModal}
+              />
               {
                 result.map(nft => (
-                  <NFTCard {...nft}/>
+                  <NFTCard
+                    {...nft}
+                    key={`${nft.tokenAddress}-${nft.tokenId}`}
+                    setOpenModal={setOpenModal}
+                    setModalProps={setModalProps}
+                  />
                 ))
               }
             </NFTCardListContainer>

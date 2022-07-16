@@ -1,6 +1,6 @@
 import { styled } from '@mui/material/styles'
 import Image from 'next/image'
-import React from 'react'
+import React, { SetStateAction } from 'react'
 import { SECONDARY_DARK, TERTIARY_COLOR } from '../utils/colors'
 
 export interface NFTCardProps {
@@ -8,6 +8,11 @@ export interface NFTCardProps {
 	tokenAddress: string
 	metadata: any
 	contractType: string
+}
+
+interface NFTCardProps_ extends NFTCardProps {
+  setModalProps: React.Dispatch<SetStateAction<any>>
+  setOpenModal: React.Dispatch<SetStateAction<boolean>>
 }
 
 const NFTCardContainer = styled('div')(({theme}) => ({
@@ -29,14 +34,24 @@ const NFTCardDescContainer = styled('div')(({theme}) => ({
 	padding: '10px 12px'
 }))
 
-const NFTCard: React.FC<NFTCardProps> = (props) => {
+const NFTCard: React.FC<NFTCardProps_> = (props) => {
   const metadata = JSON.parse(props.metadata)
+
+  const onCardClick = () => {
+    props.setModalProps({
+      tokenId: props.tokenId,
+	    tokenAddress: props.tokenAddress,
+	    metadata,
+	    contractType: props.contractType
+    })
+    props.setOpenModal(true)
+  }
 
   let image = (metadata.image || metadata.image_url) as string || ''
   if (image.startsWith('ipfs://')) image = `https://ipfs.io/${metadata?.image.slice(7)}`
 
 	return (
-		<NFTCardContainer>
+		<NFTCardContainer onClick={onCardClick}>
 			<NFTImageContainer>
 				<img
 					src={image}
