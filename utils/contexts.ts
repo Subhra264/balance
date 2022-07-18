@@ -2,12 +2,18 @@ import React from 'react'
 
 interface ILayoutContext {
   search: string
-  currentAccount: string,
-  connectWallet?: () => void,
+  currentAddress: string
+  currentBalance: number
+  connectWallet?: () => void
   ethereum?: any
+  updateBalance: (newHexBalance: string) => void
+  checkingWalletConnection: boolean;
 }
 
 export const LayoutContext = React.createContext<ILayoutContext>({
   search: '',
-  currentAccount: ''
+  currentAddress: '',
+  currentBalance: 0,
+  updateBalance: () => {},
+  checkingWalletConnection: true
 })

@@ -66,7 +66,7 @@ export default function Header(props: HeaderProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null)
-  const { currentAccount, connectWallet } = React.useContext(LayoutContext)
+  const { currentAddress, connectWallet } = React.useContext(LayoutContext)
 
   const isMenuOpen = Boolean(anchorEl)
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
@@ -106,12 +106,12 @@ export default function Header(props: HeaderProps) {
       onClose={handleMenuClose}
     >
       {
-        !currentAccount && connectWallet && (
+        !currentAddress && connectWallet && (
           <MenuItem onClick={connectWallet}>Connect Wallet</MenuItem>
         )
       }
       {
-        currentAccount && (
+        currentAddress && (
           <MenuItem onClick={handleMenuClose}>
             <Link href='/me'>My account</Link>
           </MenuItem>
@@ -137,14 +137,6 @@ export default function Header(props: HeaderProps) {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      {/* <MenuItem>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem> */}
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
           size="large"
@@ -170,7 +162,7 @@ export default function Header(props: HeaderProps) {
             component="div"
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
-            NFT Explorer
+            <Link href='/'>NFT Explorer</Link>
           </Typography>
           <Search>
             <SearchIconWrapper>

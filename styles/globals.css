@@ -15,3 +15,24 @@ a {
 * {
   box-sizing: border-box;
 }
+
+/* Works on Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #a9a5a5 #e3d7d7;
+}
+
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 0.5em;
+  height: 0.5rem;
+}
+
+*::-webkit-scrollbar-track {
+  background: #e3d7d7;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #a9a5a5;
+  border-radius: 1.1em;
+}
