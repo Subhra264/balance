@@ -36,3 +36,31 @@ export function queryNFTTransfers() {
 		}
 	}`
 }
+
+export function queryTransactions(network: string = 'api-rinkeby.') {
+	return `query Query($address: String!, $etherscan_apikey: Secret!) {
+		rinkeby_etherscan_transactions(
+      etherscan_apikey: $etherscan_apikey
+      address: $address
+      module: "account"
+      action: "txlist"
+      sort: "desc"
+    ) {
+      message
+      status
+      result {
+        blockNumber
+        timeStamp
+        hash
+        from
+        to
+        value
+        gas
+        gasPrice
+        isError
+        cumulativeGasUsed
+        gasUsed
+      }
+    }
+	}`
+}

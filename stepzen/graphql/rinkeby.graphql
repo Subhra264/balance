@@ -2,9 +2,9 @@ type Query {
   """
   Get Event Logs within a group of blocks
 
-  Equivalent to GET https://api-ropsten.etherscan.io/api?module=$module;&action=$action;&fromBlock=$fromBlock;&toBlock=latest&address=$address;&topic0=$topic;&apikey=$etherscan_apikey
+  Equivalent to GET https://api-rinkeby.etherscan.io/api?module=$module;&action=$action;&fromBlock=$fromBlock;&toBlock=latest&address=$address;&topic0=$topic;&apikey=$etherscan_apikey
   """
-  ropsten_etherscan_logs(
+  rinkeby_etherscan_logs(
     """
     The api key
     """
@@ -34,17 +34,17 @@ type Query {
     The action
     """
     action: String = "getLogs"
-  ): Ropsten_Etherscan_Etherscan
+  ): Rinkeby_Etherscan_Etherscan
     @rest(
-      endpoint: "https://api-ropsten.etherscan.io/api"
+      endpoint: "https://api-rinkeby.etherscan.io/api"
       arguments: [{ name: "apikey", argument: "etherscan_apikey" }]
     )
   """
   Get Transactions By Hash
 
-  Equivalent to GET https://api-ropsten.etherscan.io/api/api?module=$module;&action=$action;&txhash=$transaction_hash;&apikey=$etherscan_apikey
+  Equivalent to GET https://api-rinkeby.etherscan.io/api/api?module=$module;&action=$action;&txhash=$transaction_hash;&apikey=$etherscan_apikey
   """
-  ropsten_etherscan_transaction(
+  rinkeby_etherscan_transaction(
     """
     The api key
     """
@@ -63,15 +63,15 @@ type Query {
     The action
     """
     action: String!
-  ): Ropsten_Etherscan_Transaction
+  ): Rinkeby_Etherscan_Transaction
     @rest(
       resultroot: "result"
-      endpoint: "https://api-ropsten.etherscan.io/api?module=$module;&action=$action;&txhash=$transaction_hash;&apikey=$etherscan_apikey"
+      endpoint: "https://api-rinkeby.etherscan.io/api?module=$module;&action=$action;&txhash=$transaction_hash;&apikey=$etherscan_apikey"
     )
   """
   Get Normal Transactions performed by an address
 
-  Equivalent to --- GET https://api-ropsten.etherscan.io/api?module=account
+  Equivalent to - GET https://api-rinkeby.etherscan.io/api?module=account
    &action=txlist
    &address=0x1671363cdf39196333f56818963f108066f776f9
    &startblock=0
@@ -81,7 +81,7 @@ type Query {
    &sort=asc
    &apikey=YourApiKeyToken
   """
-  ropsten_etherscan_transactions(
+  rinkeby_etherscan_transactions(
     """
     The api key
     """
@@ -100,14 +100,19 @@ type Query {
     The action
     """
     action: String!
-  ): Ropsten_Etherscan_Normal_Transaction
+
+    """
+    Sort technique
+    """
+    sort: String!
+  ): Rinkeby_Etherscan_Normal_Transactions
     @rest(
-      resultroot: "result"
-      endpoint: "https://api-ropsten.etherscan.io/api?module=$module;&action=$action;&address=$address;&apikey=$etherscan_apikey"
+      # resultroot: "result"
+      endpoint: "https://api-rinkeby.etherscan.io/api?module=$module;&action=$action;&address=$address;&sort=$sort;&apikey=$etherscan_apikey"
     )
 }
 
-type Ropsten_Etherscan_Logs {
+type Rinkeby_Etherscan_Logs {
   address: String
   blockNumber: String
   data: String
@@ -122,9 +127,9 @@ type Ropsten_Etherscan_Logs {
     etherscan_apikey: Secret!
     action: String!
     module: String!
-  ): Ropsten_Etherscan_Transaction
+  ): Rinkeby_Etherscan_Transaction
     @materializer(
-      query: "ropsten_etherscan_transaction"
+      query: "rinkeby_etherscan_transaction"
       arguments: [
         { name: "etherscan_apikey", argument: "etherscan_apikey" }
         { name: "action", argument: "action" }
@@ -135,7 +140,7 @@ type Ropsten_Etherscan_Logs {
 
 }
 
-type Ropsten_Etherscan_Normal_Transaction {
+type Rinkeby_Etherscan_Normal_Transaction {
   blockNumber: String,
   timeStamp: String
   hash: String
@@ -156,7 +161,7 @@ type Ropsten_Etherscan_Normal_Transaction {
   confirmations: String
 }
 
-type Ropsten_Etherscan_Transaction {
+type Rinkeby_Etherscan_Transaction {
   accessList: JSON
   blockHash: String
   blockNumber: String
@@ -178,8 +183,14 @@ type Ropsten_Etherscan_Transaction {
   value: String
 }
 
-type Ropsten_Etherscan_Etherscan {
+type Rinkeby_Etherscan_Etherscan {
   message: String
-  result: [Ropsten_Etherscan_Logs]
+  result: [Rinkeby_Etherscan_Logs]
+  status: String
+}
+
+type Rinkeby_Etherscan_Normal_Transactions {
+  message: String
+  result: [Rinkeby_Etherscan_Normal_Transaction]
   status: String
 }
