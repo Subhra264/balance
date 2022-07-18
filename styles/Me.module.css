@@ -1,0 +1,48 @@
+.formInput {
+  display: block;
+  background-color: #e1e1e1a6;
+  margin: 0.6rem 0;
+  width: 100%;
+}
+
+.formInput:hover {
+  background-color: rgb(240, 227, 227);
+}
+
+.submitButton {
+  background: #6876d9;
+  color: white;
+  cursor: pointer;
+}
+
+.submitButton:hover {
+  background-color: #8994e3;
+}
+
+.sectionsContainer {
+  display: grid;
+  grid-template-columns: 2fr 6fr;
+  column-gap: 0.6rem;
+}
+
+.leftSection {
+  width: 100%;
+}
+
+.transactionFormContainer {
+  margin: 0.9rem 0;
+  padding: 1rem;
+  background: #fff;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 5px 3px 10px 0px #dfdfdf57;
+}
+
+.rightSection {
+  overflow-x: auto;
+}
+
+.dataTableContainer {
+  border-radius: 10px;
+  background-color: #fff;
+}
