@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { LayoutContext } from '../utils/contexts'
 import Header from './Header'
 import detectEthereumProvider from "@metamask/detect-provider";
+import Network from '../utils/networks';
 
 interface LayoutProps {
   children: React.ReactNode
@@ -21,6 +22,7 @@ const Layout: React.FC<LayoutProps> = (props) => {
     address: '',
     balance: 0
   })
+  const [selectedNetwork, setSelectedNetwork] = useState(Network.RINKEBY)
 
   useEffect(() => {
     async function setEthereumProvider() {
@@ -94,10 +96,14 @@ const Layout: React.FC<LayoutProps> = (props) => {
           connectWallet,
           updateBalance,
           ethereum,
-          checkingWalletConnection
+          checkingWalletConnection,
+          selectedNetwork
         }}
       >
-        <Header setSearch={setSearch} />
+        <Header
+          setSearch={setSearch}
+          setSelectedNetwork={setSelectedNetwork}
+        />
         {children}
       </LayoutContext.Provider>
     </div>

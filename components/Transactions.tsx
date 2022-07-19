@@ -1,6 +1,8 @@
 import { CircularProgress } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { queryTransactions } from '../libs/graphQLQuery'
+import { LayoutContext } from '../utils/contexts'
+import { networks } from './NetworkSelect'
 import StickyHeadTable, { Column } from './StickyHeadTable'
 
 interface TransactionsProps {
@@ -50,13 +52,14 @@ const columns: Column[] = [
 const Transactions: React.FC<TransactionsProps> = (props) => {
   const [result, setResult] = useState([])
   const [loading, setLoading] = useState(true)
+  const { selectedNetwork } = useContext(LayoutContext)
 
   useEffect(() => {
     if (props.address) {
-    // if (props.refresh) {
-      // props.setRefresh(false)
+      setLoading(true)
+
       const fetchTransactions = async () => {
-        const query = queryTransactions()
+        const query = queryTransactions(networks[selectedNetwork].etherscanAPI)
         console.log('Fetch transactions query', query)
   
         const response = await fetch('/api/hello', {
@@ -98,7 +101,7 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
   
       fetchTransactions()
     }
-  }, [props.address])
+  }, [props.address, selectedNetwork])
 
   return (
     loading?
