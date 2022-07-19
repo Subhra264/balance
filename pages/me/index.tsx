@@ -1,55 +1,20 @@
 import { NextPage } from 'next'
 import Head from 'next/head'
-import { ChangeEvent, FormEvent, FormEventHandler, useContext, useState } from 'react'
-import TextField from '../../components/TextField'
-// import TextField from '@mui/material/TextField'
+import { useContext } from 'react'
 import { LayoutContext } from '../../utils/contexts'
-import { transferAmount } from '../../utils/contractUtils'
 import styles from '../../styles/Me.module.css'
 import Transactions from '../../components/Transactions'
 import { CircularProgress } from '@mui/material'
+import TransferEther from '../../components/TransferEther'
+import DataTableContainer from '../../components/DataTableContainer'
 
-const Accounts: NextPage = () => {
+const Me: NextPage = () => {
   const {
     currentAddress,
     currentBalance,
     ethereum,
     checkingWalletConnection
   } = useContext(LayoutContext)
-  const [addressTo, setAddressTo] = useState('')
-  const [amount, setAmount] = useState(0.001)
-  const [message, setMessage] = useState('')
-  
-  const onAddressToChange = (ev: ChangeEvent<HTMLInputElement>) => {
-    setAddressTo(ev.target.value)
-  }
-
-  const onAmountChange = (ev: ChangeEvent<HTMLInputElement>) => {
-    //@ts-ignore
-    setAmount(ev.target.value)
-  }
-
-  const onMessageChange = (ev: ChangeEvent<HTMLInputElement>) => {
-    setMessage(ev.target.value)
-  }
-
-  const onFormSubmit: FormEventHandler<HTMLFormElement> = (ev: FormEvent<HTMLFormElement>) => {
-    ev.preventDefault()
-
-    console.log('addressto', addressTo)
-    console.log('amount', amount)
-    console.log('message', message)
-
-    transferAmount(
-      ethereum,
-      {
-        from: currentAddress,
-        to: addressTo,
-        message,
-        amount
-      }
-    )
-  }
 
   return (
     <div>
@@ -68,54 +33,20 @@ const Accounts: NextPage = () => {
                 <>
                   <div>
                     <h2>Your Account: {currentAddress}</h2>
-                    <div>Balance: {currentBalance} Eth</div>
+                    <div>
+                      <b>Balance:</b>
+                      {currentBalance} Eth
+                      <i>(This is the selected metamask account balance)</i>
+                    </div>
                   </div>
                   <div className={styles.sectionsContainer}>
                     <div className={styles.leftSection}>
                       <div className={styles.transactionFormContainer}>
-                        <h3>Transfer</h3>
-                        <form onSubmit={onFormSubmit}>
-                          <TextField
-                            className={styles.formInput}
-                            type='text'
-                            name='addressTo'
-                            // label='To'
-                            placeholder='Receiver Address'
-                            value={addressTo}
-                            onChange={onAddressToChange}
-                          />
-                          <TextField
-                            className={styles.formInput}
-                            type='number'
-                            step={0.001}
-                            // inputProps={{
-                            //   step: 0.001
-                            // }}
-                            name='amount'
-                            value={amount}
-                            onChange={onAmountChange}
-                          />
-                          <TextField
-                            className={styles.formInput}
-                            type='text'
-                            placeholder='Message'
-                            value={message}
-                            onChange={onMessageChange}
-                          />
-                          <TextField
-                            className={`${styles.formInput} ${styles.submitButton}`}
-                            type='submit'
-                          />
-                        </form>
+                        <TransferEther />
                       </div>
                     </div>
                     <div className={styles.rightSection}>
-                      <div className={styles.dataTableContainer}>
-                        <div style={{ fontWeight: 'bold', fontSize: '1.1rem', padding: '1rem'}}>
-                          Transactions
-                        </div>
-                        <Transactions address={currentAddress}/>
-                      </div>
+                      <DataTableContainer address={currentAddress} />
                     </div>
                   </div>
                 </>
@@ -140,4 +71,4 @@ const Accounts: NextPage = () => {
   )
 }
 
-export default Accounts
+export default Me
