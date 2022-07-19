@@ -37,14 +37,44 @@ export function queryNFTTransfers() {
 	}`
 }
 
-export function queryTransactions(network: string = 'api-rinkeby.') {
+export function queryTransactions(network: string = 'api-rinkeby') {
 	return `query Query($address: String!, $etherscan_apikey: Secret!) {
-		rinkeby_etherscan_transactions(
+		etherscan_transactions(
       etherscan_apikey: $etherscan_apikey
       address: $address
       module: "account"
       action: "txlist"
       sort: "desc"
+      network: "${network}"
+    ) {
+      message
+      status
+      result {
+        blockNumber
+        timeStamp
+        hash
+        from
+        to
+        value
+        gas
+        gasPrice
+        isError
+        cumulativeGasUsed
+        gasUsed
+      }
+    }
+	}`
+}
+
+export function queryBalance(network: string = 'api-rinkeby') {
+	return `query Query($address: String!, $etherscan_apikey: Secret!) {
+		etherscan_transactions(
+      etherscan_apikey: $etherscan_apikey
+      address: $address
+      module: "account"
+      action: "txlist"
+      sort: "desc"
+      network: "${network}"
     ) {
       message
       status

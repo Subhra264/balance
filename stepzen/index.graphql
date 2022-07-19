@@ -1,3 +1,7 @@
-schema @sdl(files: ["graphql/index.graphql", "graphql/rinkeby.graphql"]) {
+schema @sdl(files: [
+    "graphql/infura.graphql",
+    "graphql/etherscan.graphql",
+    "graphql/moralis.graphql"
+  ]) {
   query: Query
 }

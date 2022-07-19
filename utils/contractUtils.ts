@@ -47,9 +47,14 @@ export const transferAmount = async (ethereum: any, transferDetails: TransferEth
 
     console.log('Transaction hash', txHash)
 
-    console.log('transactions from smart_contract', await transactionContract.getAllTransactions())
+    // console.log('transactions from smart_contract', await transactionContract.getAllTransactions())
+    return {
+      success: true,
+      transferTransactionHash
+    }
 
   } catch(err) {
     console.log('Error sending eth', err)
+    return false
   }
 }
