@@ -1,4 +1,5 @@
 import { CircularProgress } from '@mui/material'
+import Link from 'next/link'
 import { useContext, useEffect, useState } from 'react'
 import { queryTransactions } from '../libs/graphQLQuery'
 import { LayoutContext } from '../utils/contexts'
@@ -59,7 +60,7 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
       setLoading(true)
 
       const fetchTransactions = async () => {
-        const query = queryTransactions(networks[selectedNetwork].etherscanAPI)
+        const { query, resultField } = queryTransactions(networks[selectedNetwork].etherscanAPI)
         console.log('Fetch transactions query', query)
   
         const response = await fetch('/api/hello', {
@@ -78,14 +79,14 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
         const res = await response.json()
         console.log('Fetched transactions', res)
 
-        const result_ = res.data.data
-          .rinkeby_etherscan_transactions
+        const result_ = res.data
+          .data[resultField]
           .result
           .map((txn: any) => ({
-            from: <a href={`https://etherscan.io/address/${txn.from}`} style={{ color: 'blue' }}>
+            from: <a href={`/address/${txn.from}`} style={{ color: 'blue' }}>
                 {txn.from.slice(0, 8)}...{txn.from.slice(30)}
               </a>,
-            to: <a href={`https://etherscan.io/address/${txn.to}`} style={{ color: 'blue' }}>
+            to: <a href={`/address/${txn.to}`} style={{ color: 'blue' }}>
                 {txn.to.slice(0, 8)}...{txn.to.slice(30)}
               </a>,
             value: Number(txn.value) / 10 ** 18,

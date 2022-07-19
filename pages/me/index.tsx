@@ -35,8 +35,8 @@ const Me: NextPage = () => {
                     <h2>Your Account: {currentAddress}</h2>
                     <div>
                       <b>Balance:</b>
-                      {currentBalance} Eth
-                      <i>(This is the selected metamask account balance)</i>
+                      {' ' + currentBalance + ' Eth '}
+                      <i style={{ fontWeight: 'bold' }}>(This is the selected metamask account balance)</i>
                     </div>
                   </div>
                   <div className={styles.sectionsContainer}>

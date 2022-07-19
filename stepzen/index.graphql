@@ -1,7 +1,11 @@
 schema @sdl(files: [
     "graphql/infura.graphql",
+    "graphql/moralis.graphql",
     "graphql/etherscan.graphql",
-    "graphql/moralis.graphql"
+    "graphql/ropsten.graphql",
+    "graphql/rinkeby.graphql",
+    "graphql/goerli.graphql",
+    "graphql/kovan.graphql",
   ]) {
   query: Query
 }

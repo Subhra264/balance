@@ -24,11 +24,11 @@ const MenuProps = {
 }
 
 export const networks: Record<Network, { name: string; etherscanAPI: string }> = {
-  [Network.ETH]: { name: 'Ethereum Mainnet', etherscanAPI: 'api' },
-  [Network.ROPSTEN]: { name: 'Ropsten', etherscanAPI: 'api-ropsten' },
-  [Network.RINKEBY]: { name: 'Rinkeby', etherscanAPI: 'api-rinkeby' },
-  [Network.GOERLI]: { name: 'Goerli', etherscanAPI: 'api-goerli' },
-  [Network.KOVAN]: { name: 'Kovan', etherscanAPI: 'api-kovan' }
+  [Network.ETH]: { name: 'Ethereum Mainnet', etherscanAPI: 'etherscan' },
+  [Network.ROPSTEN]: { name: 'Ropsten', etherscanAPI: 'ropsten' },
+  [Network.RINKEBY]: { name: 'Rinkeby', etherscanAPI: 'rinkeby' },
+  [Network.GOERLI]: { name: 'Goerli', etherscanAPI: 'goerli' },
+  [Network.KOVAN]: { name: 'Kovan', etherscanAPI: 'kovan' }
 }
 
 function getStyles(name: string, networkName: string, theme: Theme) {
@@ -55,7 +55,7 @@ export default function NetworkSelect({ selectedNetwork, setSelectedNetwork }: N
 
   return (
     <div>
-      <FormControl sx={{ m: 1, width: 300 }}>
+      <FormControl sx={{ m: 1, width: 300, color: '#fff' }}>
         <InputLabel id="demo-multiple-name-label">Network</InputLabel>
         <Select
           labelId="demo-multiple-name-label"

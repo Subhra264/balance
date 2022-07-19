@@ -3,6 +3,7 @@ import { styled } from '@mui/material/styles'
 import NFTCard, { NFTCardProps } from './NFTCard'
 import { querySearchNFTs } from '../libs/graphQLQuery'
 import NFTModal from './NFTModal'
+import { CircularProgress } from '@mui/material'
 
 interface NFTCardListProps {
 	search: string
@@ -17,12 +18,14 @@ const NFTCardListContainer = styled('div')(({theme}) => ({
 
 const NFTCardList: React.FC<NFTCardListProps> = (props) => {
 
+  const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<Array<NFTCardProps>>([])
   const [modalProps, setModalProps] = useState<NFTCardProps>()
   const [openModal, setOpenModal] = useState(false)
 
 	useEffect(() => {
 		if (props.search && props.fetchResult) {
+      setLoading(true)
 			props.setFetchResult(false)
       const fetchAPI = async () => {
 			  const query = querySearchNFTs()
@@ -42,6 +45,7 @@ const NFTCardList: React.FC<NFTCardListProps> = (props) => {
 
         const result = await res.json()
         setResult(result.data.data.moralis_nftMetadataCollection)
+        setLoading(false)
       }
 
 			fetchAPI()
@@ -51,31 +55,36 @@ const NFTCardList: React.FC<NFTCardListProps> = (props) => {
 	return (
     <>
       {
-        result.length?
-          (
-            <NFTCardListContainer>
-              <NFTModal
-                modalProps={modalProps}
-                open={openModal}
-                setOpen={setOpenModal}
-              />
-              {
-                result.map(nft => (
-                  <NFTCard
-                    {...nft}
-                    key={`${nft.tokenAddress}-${nft.tokenId}`}
-                    setOpenModal={setOpenModal}
-                    setModalProps={setModalProps}
-                  />
-                ))
-              }
-            </NFTCardListContainer>
-          )
+        loading?
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <CircularProgress />
+          </div>
         :
-          // !props.search?
-          //   'Please type something in the search box'
-          // :
-            'No Match Found'
+          result.length?
+            (
+              <NFTCardListContainer>
+                <NFTModal
+                  modalProps={modalProps}
+                  open={openModal}
+                  setOpen={setOpenModal}
+                />
+                {
+                  result.map(nft => (
+                    <NFTCard
+                      {...nft}
+                      key={`${nft.tokenAddress}-${nft.tokenId}`}
+                      setOpenModal={setOpenModal}
+                      setModalProps={setModalProps}
+                    />
+                  ))
+                }
+              </NFTCardListContainer>
+            )
+          :
+            // !props.search?
+            //   'Please type something in the search box'
+            // :
+              'No Match Found'
       }
     </>
 	)

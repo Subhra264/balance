@@ -8,6 +8,7 @@ import { LayoutContext } from '../../utils/contexts'
 import DataTableContainer from '../../components/DataTableContainer'
 import TransferEther from '../../components/TransferEther'
 import { queryBalance } from '../../libs/graphQLQuery'
+import { networks } from '../../components/NetworkSelect'
 
 const Account: NextPage = () => {
   const router = useRouter()
@@ -26,7 +27,8 @@ const Account: NextPage = () => {
         Router.push('/me')
       } else {
         const fetchAPI = async () => {
-          const query = queryBalance(selectedNetwork)
+          const network = networks[selectedNetwork].etherscanAPI
+          const { query, resultField } = queryBalance(network)
   
           const res = await fetch('/api/hello', {
             method: 'POST',
@@ -43,7 +45,8 @@ const Account: NextPage = () => {
   
           const result = await res.json()
           console.log('Balance result', result)
-          // setBalance(result.data.data.moralis_nftMetadataCollection)
+          const balance_ = Number(result.data.data[resultField].result)
+          setBalance(balance_ / 10 ** 18)
           setLoading(false)
         }
   

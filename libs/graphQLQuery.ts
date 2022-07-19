@@ -37,15 +37,15 @@ export function queryNFTTransfers() {
 	}`
 }
 
-export function queryTransactions(network: string = 'api-rinkeby') {
-	return `query Query($address: String!, $etherscan_apikey: Secret!) {
-		etherscan_transactions(
+export function queryTransactions(network: string = 'rinkeby') {
+
+	const query = `query Query($address: String!, $etherscan_apikey: Secret!) {
+		${network}_transactions(
       etherscan_apikey: $etherscan_apikey
       address: $address
       module: "account"
       action: "txlist"
       sort: "desc"
-      network: "${network}"
     ) {
       message
       status
@@ -64,33 +64,31 @@ export function queryTransactions(network: string = 'api-rinkeby') {
       }
     }
 	}`
+
+  return {
+    query,
+    resultField: `${network}_transactions`
+  }
 }
 
-export function queryBalance(network: string = 'api-rinkeby') {
-	return `query Query($address: String!, $etherscan_apikey: Secret!) {
-		etherscan_transactions(
+export function queryBalance(network: string = 'rinkeby') {
+
+	const query = `query Query($address: String!, $etherscan_apikey: Secret!) {
+		${network}_balance(
       etherscan_apikey: $etherscan_apikey
       address: $address
       module: "account"
-      action: "txlist"
-      sort: "desc"
-      network: "${network}"
+      action: "balance"
+      tag: "latest"
     ) {
       message
       status
-      result {
-        blockNumber
-        timeStamp
-        hash
-        from
-        to
-        value
-        gas
-        gasPrice
-        isError
-        cumulativeGasUsed
-        gasUsed
-      }
+      result
     }
 	}`
+
+  return {
+    query,
+    resultField: `${network}_balance`
+  }
 }
