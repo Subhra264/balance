@@ -37,6 +37,51 @@ export function queryNFTTransfers() {
 	}`
 }
 
+export function queryNFTsByOwner() {
+  return `query DefaultProvider($address: String!, $moralis_apikey: Secret!) {
+		moralis_nftOwnerCollection(
+			moralis_apikey: $moralis_apikey
+			address: $address
+		) {
+      tokenAddress
+      tokenId
+      metadata
+      contractType
+      amount
+      blockNumber
+		}
+	}`
+}
+
+export function queryNFTCollection() {
+  return `query DefaultProvider($address: String!, $moralis_apikey: Secret!) {
+		moralis_nftContractMetadata(
+      moralis_apikey: $moralis_apikey
+      address: $address
+    ) {
+      name
+      contractType
+      symbol
+      tokenAddress
+      syncedAt
+    }
+		moralis_nftCollection(
+      moralis_apikey: $moralis_apikey
+      address: $address
+      chain: ETH
+      format: DECIMAL
+    ) {
+      tokenAddress
+      tokenId
+      metadata
+      contractType
+      amount
+      name
+      symbol
+    }
+	}`
+}
+
 export function queryTransactions(network: string = 'rinkeby') {
 
 	const query = `query Query($address: String!, $etherscan_apikey: Secret!) {

@@ -71,7 +71,6 @@ const Layout: React.FC<LayoutProps> = (props) => {
           'latest'
         ]
       })
-      console.log('Balance:', balance_)
       const balance: number = Number(balance_) / 10 ** 18
 
       setCurrentAccount({ address: accounts[0], balance })

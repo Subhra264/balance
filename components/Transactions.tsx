@@ -61,7 +61,6 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
 
       const fetchTransactions = async () => {
         const { query, resultField } = queryTransactions(networks[selectedNetwork].etherscanAPI)
-        console.log('Fetch transactions query', query)
   
         const response = await fetch('/api/hello', {
           method: 'POST',
@@ -77,7 +76,6 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
         })
   
         const res = await response.json()
-        console.log('Fetched transactions', res)
 
         const result_ = res.data
           .data[resultField]
@@ -111,7 +109,14 @@ const Transactions: React.FC<TransactionsProps> = (props) => {
       result.length ?
         <StickyHeadTable columns={columns} rows={result}/>
       :
-        <div>No Transaction Found</div>
+        <div
+          style={{
+            padding: '1rem',
+            textAlign: 'center'
+          }}
+        >
+          No Transaction Found
+        </div>
   )
 }
 

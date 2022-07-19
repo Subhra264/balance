@@ -2,13 +2,7 @@ import React, { SetStateAction, useEffect } from 'react'
 import Dialog from '@mui/material/Dialog'
 import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
-import MUIButton from '@mui/material/Button'
-import Typography from '@mui/material/Typography'
-import Rating from '@mui/material/Rating'
-import TextField from '@mui/material/TextField'
-import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
-import { green } from '@mui/material/colors'
 import { NFTCardProps } from './NFTCard'
 import { Column } from './StickyHeadTable'
 import { queryNFTTransfers } from '../libs/graphQLQuery'
@@ -34,7 +28,6 @@ const NFTImageContainer = styled('div')(({theme}) => ({
 const NFTModal: React.FC<NFTModalProps> = ({ modalProps, open, setOpen }) => {
   const [rows, setRows] = React.useState<Array<Record<string, any>>>([])
   const metadata = modalProps?.metadata || null
-  console.log('Metadata', metadata)
 
   let image = (metadata?.image || metadata?.image_url) as string || ''
   if (image.startsWith('ipfs://')) image = `https://ipfs.io/${metadata?.image.slice(7)}`
@@ -53,7 +46,7 @@ const NFTModal: React.FC<NFTModalProps> = ({ modalProps, open, setOpen }) => {
       details: 'Token Address',
       value:
         <a
-          href={`https://etherscan.io/address/${modalProps?.tokenAddress}`}
+          href={`/nft-collection/${modalProps?.tokenAddress}`}
           style={{ color: 'blue' }}
         >
           {modalProps?.tokenAddress.slice(0, 8)}...{modalProps?.tokenAddress.slice(30)}
@@ -61,8 +54,6 @@ const NFTModal: React.FC<NFTModalProps> = ({ modalProps, open, setOpen }) => {
     },
     { details: 'Token ID', value: modalProps?.tokenId },
     { details: 'Contract Type', value: modalProps?.contractType },
-    // { details: 'Contract Name', value: modalProps?.tokenAddress },
-    // { details: 'Token Address', value: modalProps?.tokenAddress },
   ]
 
   const columns: Column[] = [
@@ -100,25 +91,24 @@ const NFTModal: React.FC<NFTModalProps> = ({ modalProps, open, setOpen }) => {
 
   useEffect(() => {
     const fetchAPI = async () => {
-      console.log('FetchAPI called')
       const query = queryNFTTransfers()
 
-      const res = await fetch('/api/hello', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          query,
-          variables: {
-            address: modalProps?.tokenAddress,
-            tokenId: modalProps?.tokenId
-          }
-        })
-      })
+      // TODO
+      // const res = await fetch('/api/hello', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json'
+      //   },
+      //   body: JSON.stringify({
+      //     query,
+      //     variables: {
+      //       address: modalProps?.tokenAddress,
+      //       tokenId: modalProps?.tokenId
+      //     }
+      //   })
+      // })
 
-      const result = await res.json()
-      console.log('Result', result)
+      // const result = await res.json()
     }
 
     if (modalProps?.tokenAddress && modalProps?.tokenId)

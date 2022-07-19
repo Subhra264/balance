@@ -48,7 +48,8 @@ const NFTCard: React.FC<NFTCardProps_> = (props) => {
   }
 
   let image = (metadata.image || metadata.image_url) as string || ''
-  if (image.startsWith('ipfs://')) image = `https://ipfs.io/${metadata?.image.slice(7)}`
+  if (!image) return <></>
+  if (image.startsWith('ipfs://')) image = `https://ipfs.io/${image.slice(7)}`
 
 	return (
 		<NFTCardContainer onClick={onCardClick}>

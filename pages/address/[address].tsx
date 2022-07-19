@@ -73,7 +73,7 @@ const Account: NextPage = () => {
                 <h2>Account: {address}</h2>
                 <div>
                   <b>Balance:</b>
-                  {loading? <CircularProgress/> : `${balance} Eth`}
+                  {loading? <CircularProgress/> : ` ${balance} Eth`}
                 </div>
               </div>
               <div className={styles.sectionsContainer}>

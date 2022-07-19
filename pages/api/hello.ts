@@ -12,7 +12,6 @@ export default async function handler(
   }
 
   const body = req.body
-  console.log('Body', body)
 
   const data = await fetchAPI(
     // If no stepzen endpoint, use studio mock data
@@ -25,9 +24,7 @@ export default async function handler(
       etherscan_apikey: process.env.ETHERSCAN_API_KEY,
       infura_app_id: process.env.INFURA_APP_ID
     }
-  );
-
-  console.log('Data', data)
+  )
 
   res.status(200).json({ data: data })
 }

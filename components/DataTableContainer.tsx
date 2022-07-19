@@ -1,6 +1,7 @@
 import { styled } from '@mui/material/styles'
 import { useState } from 'react'
-import NetworkSelect from './NetworkSelect'
+import { SECONDARY_DARK } from '../utils/colors'
+import NFTCardList from './NFTCardList'
 import Transactions from './Transactions'
 
 interface DataTableContainerProps {
@@ -12,7 +13,19 @@ const DataTableWrapper = styled('div')(({theme}) => ({
   background: '#fff'
 }))
 
+const TableType = styled('div')(({theme}) => ({
+  fontSize: '1.1rem',
+  padding: '1rem',
+  color: '#222',
+  cursor: 'pointer',
+  margin: '0 0.7rem',
+  '&:hover': {
+    background: '#dfdfdf'
+  }
+}))
+
 const DataTableContainer: React.FC<DataTableContainerProps> = ({ address }) => {
+  const [showTransactions, setShowTransactions] = useState(true)
 
   return (
     <DataTableWrapper>
@@ -20,15 +33,34 @@ const DataTableContainer: React.FC<DataTableContainerProps> = ({ address }) => {
         style={{
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-between'
+          justifyContent: 'flex-start'
         }}
       >
-        <div style={{ fontWeight: 'bold', fontSize: '1.1rem', padding: '1rem'}}>
+        <TableType
+          onClick={() => setShowTransactions(true)}
+          style={{
+            color: showTransactions? '#000' : '#444',
+            fontWeight: showTransactions? 'bold' : 'normal'
+          }}
+        >
           Transactions
-        </div>
-        <div></div>
+        </TableType>
+        <TableType
+          onClick={() => setShowTransactions(false)}
+          style={{
+            color: showTransactions? '#444' : '#000',
+            fontWeight: showTransactions? 'normal' : 'bold'
+          }}
+        >
+          NFTs
+        </TableType>
       </div>
-      <Transactions address={address}/>
+      {
+        showTransactions?
+          <Transactions address={address}/>
+        :
+          <NFTCardList ownerAddress={address} />
+      }
     </DataTableWrapper>
   )
 }

@@ -1067,7 +1067,7 @@ type Query {
     """
     The chain to query
     """
-    chain: Moralis_Chain
+    chain: Moralis_Chain!
 
     """
     The cursor returned in the last response (for getting the next page)
@@ -1077,7 +1077,7 @@ type Query {
     """
     The format of the token id
     """
-    format: Moralis_Format
+    format: Moralis_Format!
 
     """
     limit
@@ -1088,10 +1088,22 @@ type Query {
     offset
     """
     offset: Int
-  ): Moralis_NftCollection
+  ): [Moralis_Nft]
     @rest(
-      endpoint: "https://deep-index.moralis.io/api/v2/nft/$address"
+      endpoint: "https://deep-index.moralis.io/api/v2/nft/$address?chain=$chain;&format=$format"
       headers: [{ name: "x-api-key", value: "$moralis_apikey" }]
+      resultroot: "result[]"
+      setters: [
+        { field: "tokenId", path: "token_id" }
+        { field: "tokenAddress", path: "token_address" }
+        { field: "tokenUri", path: "token_uri" }
+        { field: "contractType", path: "contract_type" }
+        { field: "tokenHash", path: "token_hash" }
+        { field: "minterAddress", path: "minter_address" }
+        { field: "blockNumberMinted", path: "block_number_minted" }
+        { field: "transactionMinted", path: "transaction_minted" }
+        { field: "syncedAt", path: "synced_at" }
+      ]
     )
 
   """
@@ -1120,6 +1132,11 @@ type Query {
     @rest(
       endpoint: "https://deep-index.moralis.io/api/v2/nft/$address/metadata"
       headers: [{ name: "x-api-key", value: "$moralis_apikey" }]
+      setters: [
+        { field: "contractType", path: "contract_type" }
+        { field: "syncedAt", path: "synced_at" }
+        { field: "tokenAddress", path: "token_address" }
+      ]
     )
 
   """
@@ -1258,10 +1275,24 @@ type Query {
     The addresses to get balances for (Optional)
     """
     tokenAddresses: [String]
-  ): Moralis_NftOwnerCollection
+  # ): Moralis_NftOwnerCollection
+  ): [Moralis_NftOwner]
     @rest(
       endpoint: "https://deep-index.moralis.io/api/v2/$address/nft"
       headers: [{ name: "x-api-key", value: "$moralis_apikey" }]
+      resultroot: "result[]"
+      setters: [
+        # { field: "pageSize", path: "page_size" }
+        { field: "tokenId", path: "token_id" }
+        { field: "tokenAddress", path: "token_address" }
+        { field: "tokenUri", path: "token_uri" }
+        { field: "contractType", path: "contract_type" }
+        { field: "tokenHash", path: "token_hash" }
+        { field: "blockNumberMinted", path: "block_number_minted" }
+        { field: "blockNumber", path: "block_number" }
+        { field: "ownerOf", path: "owner_of" }
+        { field: "syncedAt", path: "synced_at" }
+      ]
     )
 
   """
@@ -2163,6 +2194,11 @@ type Moralis_NftOwner {
   The address of the contract of the NFT
   """
   tokenAddress: String!
+
+  """
+  The address of the contract of the NFT
+  """
+  tokenHash: String!
 
   """
   The token id of the NFT
